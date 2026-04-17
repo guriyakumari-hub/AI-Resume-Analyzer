@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI Resume Analyzer
 
 A beginner-friendly full-stack resume analyzer built with:
@@ -68,3 +69,7 @@ ai-resume-analyzer/
 - The backend expects a PDF file upload.
 - The frontend uses a loading message while waiting for the backend.
 - Errors are shown in the UI if file upload or analysis fails.
+=======
+# AI-Resume-Analyzer
+🚀 AI Resume Analyzer built with Spring Boot that evaluates resumes against job descriptions. Extracts text using Apache Tika, calculates match percentage 📊, identifies missing keywords ⚠️, and provides smart suggestions 💡 to improve ATS compatibility and boost job selection chances.
+>>>>>>> 75fb03d4dcd43270d8c643f7dc571189c237aa30
