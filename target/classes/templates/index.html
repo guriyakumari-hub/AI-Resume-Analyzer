@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Resume Analyzer</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="page-shell">
+    <section class="hero-section">
+        <div class="hero-content">
+            <span class="eyebrow">Resume Improvement</span>
+            <h1>AI Resume Analyzer</h1>
+            <p>Upload your resume and paste the job description to receive a clear match score, missing keywords, and improvement suggestions.</p>
+        </div>
+        <div class="hero-card small-card">
+            <h2>How it works</h2>
+            <ul>
+                <li>Upload a PDF or DOCX resume</li>
+                <li>Paste the job description</li>
+                <li>Get a keyword match score and tips</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="form-card">
+        <div class="form-header">
+            <div>
+                <h2>Analyze your resume</h2>
+                <p>Simple, fast, and built for professional resume feedback.</p>
+            </div>
+        </div>
+
+        <div class="error-box" th:if="${errorMessage}">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <form th:action="@{/analyze}" method="post" enctype="multipart/form-data">
+            <label for="resumeFile">Resume file</label>
+            <input type="file" id="resumeFile" name="resumeFile" accept=".pdf,.docx" required />
+
+            <label for="jobDescription">Job description</label>
+            <textarea id="jobDescription" name="jobDescription" rows="8"
+                      placeholder="Paste the job description here..." required></textarea>
+
+            <button type="submit" class="primary-button">Analyze Resume</button>
+        </form>
+    </section>
+</div>
+</body>
+</html>

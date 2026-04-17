@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analysis Result - AI Resume Analyzer</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="page-shell">
+    <section class="hero-section result-hero">
+        <div class="hero-content">
+            <span class="eyebrow">Resume Result</span>
+            <h1>Analysis Summary</h1>
+            <p>Review your resume score, keyword match, missing keywords, and suggested improvements.</p>
+        </div>
+        <div class="hero-actions">
+            <button type="button" class="theme-toggle" onclick="toggleTheme()">Dark Mode</button>
+            <a class="secondary-button" th:href="@{/}">Analyze Another Resume</a>
+            <a class="primary-button download-button" th:href="@{/download-report}">Download PDF Report</a>
+        </div>
+    </section>
+
+    <section class="result-card result-overview">
+        <div class="score-block">
+            <span>Match Score</span>
+            <p class="score-value" th:text="${feedback.score} + '/100'"></p>
+            <p class="score-subtext" th:text="${feedback.matchedKeywordCount} + ' of ' + ${feedback.totalKeywordCount} + ' keywords matched'"></p>
+        </div>
+        <div class="progress-block">
+            <div class="progress-label">
+                <span>Match Percentage</span>
+                <strong th:text="${feedback.matchPercentage} + '%'"></strong>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" th:classappend="${feedback.matchPercentage >= 80} ? ' high' : (${feedback.matchPercentage >= 60} ? ' medium' : ' low')" th:style="${'width:' + feedback.matchPercentage + '%'}"></div>
+            </div>
+            <div class="score-meter">
+                <div class="meter-track">
+                    <div class="meter-fill" th:style="${'width:' + feedback.matchPercentage + '%'}"></div>
+                </div>
+                <span class="meter-text" th:text="${feedback.matchPercentage} + '% match'"></span>
+            </div>
+            <p class="progress-note">Strong progress bars help you focus on the highest-impact improvements.</p>
+        </div>
+    </section>
+
+    <section class="cards-grid">
+        <div class="result-card chart-card">
+            <h3>Skill Match Overview</h3>
+            <canvas id="skillChart" aria-label="Skill match chart" role="img"></canvas>
+        </div>
+        <div class="result-card">
+            <h3>Missing Keywords</h3>
+            <ul>
+                <li th:each="keyword : ${feedback.missingKeywords}" th:text="${keyword}"></li>
+                <li th:if="${feedback.missingKeywords == null or #lists.isEmpty(feedback.missingKeywords)}">Great! No missing keywords found.</li>
+            </ul>
+        </div>
+        <div class="result-card">
+            <h3>Resume Sections</h3>
+            <ul>
+                <li th:each="section : ${feedback.detectedSections}" th:text="${section}"></li>
+                <li th:if="${feedback.detectedSections == null or #lists.isEmpty(feedback.detectedSections)}">No sections could be detected automatically.</li>
+            </ul>
+            <div class="section-hint" th:if="${feedback.missingSections != null and !#lists.isEmpty(feedback.missingSections)}">
+                <strong>Suggested sections:</strong>
+                <span th:text="${#strings.join(feedback.missingSections, ', ')}"></span>
+            </div>
+        </div>
+        <div class="result-card advice-card">
+            <h3>Suggestions</h3>
+            <ul>
+                <li th:each="suggestion : ${feedback.suggestions}" th:text="${suggestion}"></li>
+                <li th:if="${feedback.suggestions == null or #lists.isEmpty(feedback.suggestions)}">No suggestions available.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="text-card">
+        <h3>Extracted Resume Text Preview</h3>
+        <pre th:text="${feedback.extractedText}"></pre>
+    </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+    const matchedCount = [[${feedback.matchedKeywordCount}]];
+    const totalCount = [[${feedback.totalKeywordCount}]];
+    const missingCount = Math.max(totalCount - matchedCount, 0);
+    const matchPercent = [[${feedback.matchPercentage}]];
+
+    const ctx = document.getElementById('skillChart');
+    if (ctx) {
+        if (totalCount > 0) {
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Matched Keywords', 'Missing Keywords'],
+                    datasets: [{
+                        data: [matchedCount, missingCount],
+                        backgroundColor: ['#22c55e', '#f97316'],
+                        borderColor: ['#ffffff', '#ffffff'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#cbd5e1' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + ' items';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            ctx.parentElement.innerHTML = '<p class="chart-empty">No keyword match data available yet.</p>';
+        }
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const btn = document.querySelector('.theme-toggle');
+        if (btn) {
+            btn.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+        }
+    }
+</script>
+</body>
+</html>

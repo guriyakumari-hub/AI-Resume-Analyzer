@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Resume Analyzer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="card">
+      <div class="top-bar">
+        <h1>AI Resume Analyzer</h1>
+        <button id="theme-toggle" class="toggle-button">Dark Mode</button>
+      </div>
+
+      <p class="subtitle">Upload your resume and get an AI-powered analysis of skills, score, and improvements.</p>
+
+      <form id="resume-form">
+        <label class="field-label" for="resume">Resume PDF</label>
+        <input id="resume" type="file" accept="application/pdf" />
+
+        <label class="field-label" for="job-description">Job Description (optional)</label>
+        <textarea id="job-description" rows="4" placeholder="Paste target job description here"></textarea>
+
+        <button id="analyze-button" type="button">Analyze Resume</button>
+      </form>
+
+      <div id="status" class="status-text"></div>
+
+      <div id="result" class="result-panel hidden">
+        <div class="result-header">
+          <h2>Resume Analysis</h2>
+          <div class="score-box">
+            <span>Score</span>
+            <strong id="score-value">0</strong>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-track">
+            <div id="score-bar" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="result-section">
+          <h3>Skills</h3>
+          <div id="skills-list" class="chip-list"></div>
+        </div>
+
+        <div class="result-section">
+          <h3>Suggestions</h3>
+          <ul id="suggestions-list" class="suggestions-list"></ul>
+        </div>
+
+        <div id="job-fit-section" class="result-section hidden">
+          <h3>Job Match</h3>
+          <p id="job-match-text"></p>
+          <p><strong>Job fit score:</strong> <span id="job-fit-score">0</span>/100</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

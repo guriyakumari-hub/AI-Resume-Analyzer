@@ -1,0 +1,6 @@
+com\example\resumeanalyzer\config\SecurityConfig.class
+com\example\resumeanalyzer\controller\ResumeController.class
+com\example\resumeanalyzer\service\ResumeService.class
+com\example\resumeanalyzer\utils\TextUtils.class
+com\example\resumeanalyzer\model\ResumeFeedback.class
+com\example\resumeanalyzer\ResumeAnalyzerApplication.class
